@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: "wurstmeister/zookeeper"
+    hostname: "zookeeper"
+    container_name: camel_boilerplate_zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - 'camel_boilerplate_zookeper_data:/data'
+  kafka:
+    image: "wurstmeister/kafka"
+    hostname: "kafka"
+    container_name: camel_boilerplate_kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - "zookeeper"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: "kafka"
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_CREATE_TOPICS: "camel_boilerplate_topic:1:1"
+      KAFKA_BROKER_ID: "1001"
+      KAFKA_RESERVED_BROKER_MAX_ID: "1001"
+    volumes:
+      - "camel_boilerplate_kafka_data:/data"
+  postgres:
+    image: postgres
+    container_name: camel_boilerplate_postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'camel_boilerplate_postgres_data:/data'
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: camelboilerplate
+  camel_boilerplate:
+    container_name: camel_boilerplate
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    working_dir: /usr/src/camel-boilerplate
+    command: onchange -i -k '/usr/src/camel-boilerplate/src/**/*' '/usr/src/camel-boilerplate/resources/*'  -- mvn clean install spring-boot:run
+    depends_on:
+      - "zookeeper"
+      - "kafka"
+      - "postgres"
+    volumes:
+      - ./:/usr/src/camel-boilerplate
+      - ~/.m2/settings.xml:/root/.m2/settings.xml
+
+volumes:
+  camel_boilerplate_zookeper_data:
+    driver: local
+  camel_boilerplate_kafka_data:
+    driver: local
+  camel_boilerplate_postgres_data:
+    driver: local
