@@ -21,6 +21,17 @@ This project contains a Dockerfile / Docker Compose that creates all the require
 **Shutdown Containers**  
 `$ docker-compose down`
 
+### Build Note
+
+When you run the project using Docker, it compiles the source code and creates
+a target folder containing the project's jar. After that you will not be able
+to compile the project using your IDE or your command line because the
+folder's owner now is Docker's user.
+
+To solve this problem, just delete the target folder using sudo or
+administrative privileges when you want to run the application using your
+IDE or command line.
+
 ### Sending events to Kafka
 To be able to send events to Kafka, you can connect into it's container and send events using the CLI. 
 To do so, go into your terminal with the containers running and type the following commands to connect into the 
@@ -42,17 +53,6 @@ model to test the application:
 **Sample Event**
 
     {"name":"Bruno","quantity":12,"price":12.5}
-
-### Note
-When you run the project using Docker, it compiles the source code and creates
-a target folder containing the project's jar. After that you will not be able
-to compile the project using your IDE or your command line because the
-folder's owner now is Docker's user.
-
-To solve this problem, just delete the target folder using sudo or
-administrative privileges when you want to run the application using your
-IDE or command line.
-
 
 ## Running at local machine
 
