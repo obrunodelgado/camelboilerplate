@@ -2,7 +2,7 @@
 
 ## Development Pre-Requisites
 - **IDE**: to develop and debug the application
-- **Java 8+**: the programming language for this project is Java
+- **Java 11+**: the programming language for this project is Java
 - **Maven**: used to manage packages and build the project
 - **Docker**: to avoid configuring development environment
 - **Docker-Compose**: to create the infrastructure boilerplate
