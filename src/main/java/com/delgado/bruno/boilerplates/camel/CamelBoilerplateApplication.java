@@ -1,4 +1,4 @@
-package boilerplates.delgado.bruno.camelboilerplate;
+package com.delgado.bruno.boilerplates.camel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

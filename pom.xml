@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.3</version>
+		<version>2.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -18,8 +18,8 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<springboot.version>2.4.3</springboot.version>
-		<camel-version>3.8.0</camel-version>
+		<camel.version>3.8.0</camel.version>
+		<springboot.version>2.4.4</springboot.version>
 	</properties>
 
 	<dependencyManagement>
@@ -34,7 +34,14 @@
 			<dependency>
 				<groupId>org.apache.camel.springboot</groupId>
 				<artifactId>camel-spring-boot-bom</artifactId>
-				<version>${camel-version}</version>
+				<version>${camel.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-bom</artifactId>
+				<version>${camel.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -52,18 +59,21 @@
 		<dependency>
 			<groupId>org.apache.camel.springboot</groupId>
 			<artifactId>camel-spring-boot-starter</artifactId>
-			<version>3.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel.springboot</groupId>
 			<artifactId>camel-kafka-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-jdbc-starter</artifactId>
 		</dependency>
 
 		<!-- DATABASE CONNECTOR -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.4.1212</version>
+			<version>42.2.19</version>
 		</dependency>
 
 		<!-- DATA SOURCE -->
@@ -77,7 +87,13 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-			<version>6.5.7</version>
+			<version>7.7.0</version>
+		</dependency>
+
+		<!-- JSON UNMARSHALL -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-gson</artifactId>
 		</dependency>
 
 		<!-- METRICS AND HEALTH CHECKS -->
@@ -95,9 +111,15 @@
 			<version>2.6.1</version>
 		</dependency>
 
+		<!-- TEST -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring-junit5</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
