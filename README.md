@@ -1,4 +1,4 @@
-# CAMEL BOILERPLATE
+# SPRING-BOOT CAMEL BOILERPLATE
 
 ## Development Pre-Requisites
 - **IDE**: to develop and debug the application
