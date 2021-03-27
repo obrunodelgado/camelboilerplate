@@ -11,6 +11,10 @@ public class KafkaBrokers {
         this.brokers = Arrays.asList(brokers);
     }
 
+    public List<String> getBrokers() {
+        return brokers;
+    }
+
     public String getKafkaUri(String topic, String offset) {
         return String.format(
                 "kafka:%s?brokers=%s&autoOffsetReset=%s",

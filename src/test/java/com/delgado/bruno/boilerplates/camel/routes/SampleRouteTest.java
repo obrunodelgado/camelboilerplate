@@ -1,7 +1,6 @@
-package com.delgado.bruno.boilerplates.camel;
+package com.delgado.bruno.boilerplates.camel.routes;
 
-import com.delgado.bruno.boilerplates.camel.configurations.DependencyInjections;
-import com.delgado.bruno.boilerplates.camel.routes.SampleRoute;
+import com.delgado.bruno.boilerplates.camel.configurations.DependencyInjection;
 import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
@@ -22,7 +21,7 @@ import static com.delgado.bruno.boilerplates.camel.routes.SampleRoute.TOPIC_ID;
 @UseAdviceWith
 @CamelSpringBootTest
 @SpringBootTest(classes = { SampleRoute.class })
-@ContextConfiguration(classes = { DependencyInjections.class, CamelAutoConfiguration.class})
+@ContextConfiguration(classes = { DependencyInjection.class, CamelAutoConfiguration.class})
 public class SampleRouteTest {
 
     @Autowired
@@ -45,7 +44,7 @@ public class SampleRouteTest {
     }
 
     @Test
-    public void testPositive() throws Exception {
+    public void test_sample_route() throws Exception {
         String event = "{\"name\":\"Bruno\",\"quantity\":12,\"price\":12.5}";
         String expected = "INSERT INTO sample_table (name, quantity, price) VALUES ('Bruno', 12, 12.5)";
 

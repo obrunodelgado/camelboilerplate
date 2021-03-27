@@ -21,7 +21,7 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: "kafka"
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_CREATE_TOPICS: "sample_topic:1:1"
+      KAFKA_CREATE_TOPICS: "sample_topic:1:1,health_check:1:1"
       KAFKA_BROKER_ID: "1001"
       KAFKA_RESERVED_BROKER_MAX_ID: "1001"
     volumes:
@@ -35,7 +35,7 @@ services:
       - 'camel_boilerplate_postgres_data:/data'
     environment:
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: camelboilerplate
+      POSTGRES_DB: camel_boilerplate
   camel_boilerplate:
     container_name: camel_boilerplate
     build:

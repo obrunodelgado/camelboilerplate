@@ -9,12 +9,19 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-public class DependencyInjections {
+public class DependencyInjection {
+
+    // USE IF YOU ARE RUNNING THIS PROJECT IN A CONTAINER
+    private final String KAFKA_HOST = "camel_boilerplate_kafka";
+    private final String POSTGRESQL_HOST = "camel_boilerplate_postgres";
+
+    // USE IF YOU ARE RUNNING THIS PROJECT USING COMMAND LINE
+//    private final String POSTGRESQL_HOST = "localhost";
+//    private final String KAFKA_HOST = "localhost";
 
     @Bean
     public KafkaBrokers kafkaBrokers() {
-        final String[] brokers = new String[] { "camel_boilerplate_kafka:9092" };
-//        final String[] brokers = new String[] { "localhost:9092" };
+        final String[] brokers = new String[] { KAFKA_HOST + ":9092" };
         return new KafkaBrokers(brokers);
     }
 
@@ -23,8 +30,7 @@ public class DependencyInjections {
         String driver = "org.postgresql.Driver";
         String username = "postgres";
         String password = "postgres";
-        String dataBaseConnectionString = "jdbc:postgresql://camel_boilerplate_postgres:5432/camelboilerplate";
-//        String dataBaseConnectionString = "jdbc:postgresql://localhost:5432/camelboilerplate";
+        String dataBaseConnectionString = "jdbc:postgresql://" + POSTGRESQL_HOST + ":5432/camel_boilerplate";
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUsername(username);
@@ -33,13 +39,5 @@ public class DependencyInjections {
         dataSource.setUrl(dataBaseConnectionString);
 
         return dataSource;
-    }
-
-    @Bean(initMethod = "migrate")
-    public Flyway flyway(DataSource dataSource) {
-        FluentConfiguration configuration = Flyway.configure();
-        configuration.schemas("public");
-        configuration.dataSource(dataSource);
-        return configuration.load();
     }
 }
