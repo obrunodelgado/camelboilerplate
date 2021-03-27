@@ -2,6 +2,7 @@ package com.delgado.bruno.boilerplates.camel.routes;
 
 import com.delgado.bruno.boilerplates.camel.configurations.KafkaBrokers;
 import com.delgado.bruno.boilerplates.camel.models.SampleEvent;
+import com.delgado.bruno.boilerplates.camel.processors.SampleExceptionProcessor;
 import com.delgado.bruno.boilerplates.camel.processors.SampleProcessor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.gson.GsonDataFormat;
@@ -26,6 +27,11 @@ public class SampleRoute extends RouteBuilder {
     public void configure() {
         final String kafkaUri = this.kafkaBrokers.getKafkaUri(TOPIC_ID, OFFSET);
         final GsonDataFormat dataFormat = new GsonDataFormat(SampleEvent.class);
+
+        onException(Exception.class)
+                .handled(true)
+                .process(new SampleExceptionProcessor())
+                .to("jdbc:dataSource");
 
         from(kafkaUri + "&groupId=" + GROUP_ID)
                 .routeId("sample")

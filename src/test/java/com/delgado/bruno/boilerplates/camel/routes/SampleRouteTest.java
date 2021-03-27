@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 import static com.delgado.bruno.boilerplates.camel.routes.SampleRoute.TOPIC_ID;
@@ -21,6 +22,7 @@ import static com.delgado.bruno.boilerplates.camel.routes.SampleRoute.TOPIC_ID;
 @UseAdviceWith
 @CamelSpringBootTest
 @SpringBootTest(classes = { SampleRoute.class })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = { DependencyInjection.class, CamelAutoConfiguration.class})
 public class SampleRouteTest {
 
@@ -51,6 +53,17 @@ public class SampleRouteTest {
         sampleTopic.sendBody(event);
 
         jdbc.expectedBodiesReceived(expected);
+        MockEndpoint.assertIsSatisfied(camelContext);
+    }
+
+    @Test
+    public void test_exception_route() throws Exception {
+        String event = "malformed_json";
+        String expectedQuery = "INSERT INTO public.errors_issued (system_time, route, message, cause, event) VALUES(now(), 'sample', 'java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $', 'Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $', 'malformed_json')";
+
+        sampleTopic.sendBody(event);
+
+        jdbc.expectedBodiesReceived(expectedQuery);
         MockEndpoint.assertIsSatisfied(camelContext);
     }
 }
