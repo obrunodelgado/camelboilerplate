@@ -13,12 +13,12 @@ public class SampleExceptionProcessor implements Processor {
 
     @Override
     public void process(Exchange exchange) throws Exception {
-        String route = (String) exchange.getProperty(Exchange.FAILURE_ROUTE_ID);
-        String event = exchange.getIn().getBody(String.class);
+        var route = (String) exchange.getProperty(Exchange.FAILURE_ROUTE_ID);
+        var event = exchange.getIn().getBody(String.class);
 
-        Exception exception = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
-        String cause = exception.getCause().getLocalizedMessage();
-        String message = exception.getLocalizedMessage();
+        var exception = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
+        var cause = exception.getCause().getLocalizedMessage();
+        var message = exception.getLocalizedMessage();
 
         LOGGER.error("An error ocurred while processing route " + route + "."
                 + " | Event: " + event
@@ -26,7 +26,7 @@ public class SampleExceptionProcessor implements Processor {
                 + " | Message: "+ exception.getMessage()
                 + " | Cause: " + exception.getCause());
 
-        String insertQuery = String.format(INSERT_QUERY, route, message, cause, event);
+        var insertQuery = String.format(INSERT_QUERY, route, message, cause, event);
         exchange.getIn().setBody(insertQuery);
     }
 }

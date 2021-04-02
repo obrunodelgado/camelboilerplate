@@ -62,7 +62,7 @@ public class KafkaHealthIndicator implements HealthIndicator {
         }
 
         try {
-            DescribeClusterOptions describeClusterOptions = new DescribeClusterOptions().timeoutMs(2000);
+            var describeClusterOptions = new DescribeClusterOptions().timeoutMs(2000);
             adminClient.describeCluster(describeClusterOptions);
 
             adminClient
@@ -75,7 +75,7 @@ public class KafkaHealthIndicator implements HealthIndicator {
                     .all()
                     .get(CHECK_TIMEOUT, TimeUnit.SECONDS);
 
-            List<TopicPartitionInfo> partitions = topicDescriptionMap.get(HEALTH_CHECK_TOPIC)
+            var partitions = topicDescriptionMap.get(HEALTH_CHECK_TOPIC)
                     .partitions();
 
             if (partitions == null || partitions.isEmpty()) {
@@ -95,7 +95,7 @@ public class KafkaHealthIndicator implements HealthIndicator {
             return Health.down()
                     .withDetail("Reason", "Kafka may be offline").build();
         } finally {
-            Duration duration = Duration.ofMillis(10);
+            var duration = Duration.ofMillis(10);
             adminClient.close(duration);
         }
 

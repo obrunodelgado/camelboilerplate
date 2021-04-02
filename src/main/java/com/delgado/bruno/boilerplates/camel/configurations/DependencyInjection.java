@@ -17,21 +17,18 @@ public class DependencyInjection {
 
     @Bean
     public KafkaBrokers kafkaBrokers(Environment environment) {
-        final String[] brokers = new String[] { environment.getProperty("kafka.url") };
+        final var brokers = new String[] { environment.getProperty("kafka.url") };
         return new KafkaBrokers(brokers);
     }
 
     @Bean
     public DataSource dataSource(Environment environment) {
-        String driver = environment.getProperty("database.driver");
-        String username = environment.getProperty("database.username");
-        String password = environment.getProperty("database.password");
-        String dataBaseConnectionString = environment.getProperty("database.url");
+        var driver = environment.getProperty("database.driver");
+        var username = environment.getProperty("database.username");
+        var password = environment.getProperty("database.password");
+        var dataBaseConnectionString = environment.getProperty("database.url");
 
-        Logger logger = LoggerFactory.getLogger(DependencyInjection.class);
-        logger.info("Database Connection String: " + dataBaseConnectionString);
-
-        BasicDataSource dataSource = new BasicDataSource();
+        var dataSource = new BasicDataSource();
         dataSource.setUsername(username);
         dataSource.setPassword(password);
         dataSource.setDriverClassName(driver);

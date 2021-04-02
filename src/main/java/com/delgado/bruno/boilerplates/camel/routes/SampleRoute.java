@@ -25,8 +25,8 @@ public class SampleRoute extends RouteBuilder {
 
     @Override
     public void configure() {
-        final String kafkaUri = this.kafkaBrokers.getKafkaUri(TOPIC_ID, OFFSET);
-        final GsonDataFormat dataFormat = new GsonDataFormat(SampleEvent.class);
+        final var kafkaUri = this.kafkaBrokers.getKafkaUri(TOPIC_ID, OFFSET);
+        final var dataFormat = new GsonDataFormat(SampleEvent.class);
 
         onException(Exception.class)
                 .handled(true)
