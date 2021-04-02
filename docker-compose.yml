@@ -44,7 +44,7 @@ services:
     ports:
       - '8080:8080'
     working_dir: /usr/src/camel-boilerplate
-    command: onchange -i -k '/usr/src/camel-boilerplate/src/**/*' '/usr/src/camel-boilerplate/resources/*'  -- mvn clean install spring-boot:run
+    command: onchange -i -k '/usr/src/camel-boilerplate/src/**/*' '/usr/src/camel-boilerplate/resources/*'  -- mvn clean install spring-boot:run -Dspring-boot.run.arguments=--database.password=postgres -Dspring-boot.run.profiles=docker
     depends_on:
       - "zookeeper"
       - "kafka"

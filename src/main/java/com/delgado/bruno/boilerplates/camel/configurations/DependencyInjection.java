@@ -3,34 +3,33 @@ package com.delgado.bruno.boilerplates.camel.configurations;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.actuate.info.EnvironmentInfoContributor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
 
 @Configuration
 public class DependencyInjection {
 
-    // USE IF YOU ARE RUNNING THIS PROJECT IN A CONTAINER
-    private final String KAFKA_HOST = "camel_boilerplate_kafka";
-    private final String POSTGRESQL_HOST = "camel_boilerplate_postgres";
-
-    // USE IF YOU ARE RUNNING THIS PROJECT USING COMMAND LINE
-//    private final String POSTGRESQL_HOST = "localhost";
-//    private final String KAFKA_HOST = "localhost";
-
     @Bean
-    public KafkaBrokers kafkaBrokers() {
-        final String[] brokers = new String[] { KAFKA_HOST + ":9092" };
+    public KafkaBrokers kafkaBrokers(Environment environment) {
+        final String[] brokers = new String[] { environment.getProperty("kafka.url") };
         return new KafkaBrokers(brokers);
     }
 
     @Bean
-    public DataSource dataSource() {
-        String driver = "org.postgresql.Driver";
-        String username = "postgres";
-        String password = "postgres";
-        String dataBaseConnectionString = "jdbc:postgresql://" + POSTGRESQL_HOST + ":5432/camel_boilerplate";
+    public DataSource dataSource(Environment environment) {
+        String driver = environment.getProperty("database.driver");
+        String username = environment.getProperty("database.username");
+        String password = environment.getProperty("database.password");
+        String dataBaseConnectionString = environment.getProperty("database.url");
+
+        Logger logger = LoggerFactory.getLogger(DependencyInjection.class);
+        logger.info("Database Connection String: " + dataBaseConnectionString);
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUsername(username);
