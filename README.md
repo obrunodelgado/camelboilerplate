@@ -27,7 +27,9 @@ In this project you will find references for the following study topics:
 
 ## Running the application
 
-This project is configured to run using a *docker-compose* file or even at the command-line. The project is configured to use different configurations according to the environment which the project is being run.
+This project is configured to run using a 
+[*docker-compose*](https://github.com/obrunodelgado/camelboilerplate/blob/main/docker-compose.yml) file or even at the 
+command-line. The project is configured to use different configurations according to the environment which the project is being run.
 
 > Running the project with Docker uses different environment variables than running
 > it from the command-line.
@@ -54,7 +56,8 @@ test the project:
 **Shutdown Containers**  
 `$ docker-compose down`
 
-Note in the `application-docker.properties` that we have specific configurations to run the project using 
+Note in the [`application-docker.properties`](https://github.com/obrunodelgado/camelboilerplate/blob/main/src/main/resources/application-docker.properties)
+that we have specific configurations to run the project using 
 Docker envinroment. More information in the Environment Variables topic.
 
 #### Build Note
@@ -110,11 +113,12 @@ model to test the application:
 
 **Sample Event**
 
-    {"name":"Bruno","quantity":12,"price":12.5}
+    {"name":"Product","quantity":12,"price":12.5}
 
 ## Environment Variables
 All real applications contains different configurations for different environments. In other words you will always have 
-different connection strings for the Production and Local environment, for example.
+different connection strings for the Production and Local environment, for example. At Spring it is 
+called *[profiles](https://docs.spring.io/spring-boot/docs/1.2.0.M1/reference/html/boot-features-profiles.html#boot-features-profiles)*.
 
 In our case we need to set different hosts to run the project using the Docker environment and the local environment. 
 This happens because each module of this application will run in 4 different containers, one for the application, one 
@@ -125,16 +129,16 @@ In other words, when you are running the application using a Docker container an
 Kafka using a localhost definition it will not be able to connect to Kafka because there's not a Kafka running at the 
 Application container because Kafka is in another container, another 'virtual machine'.
 
-To solve this problem we need to tell the Application that Kafka is hosted at `camel_boilerplate_kafka` - Kafka's 
-container name - and the PostgreSQL is hosted at `camel_boilerplate_postgres` - PostgreSQL container name.  These hosts 
+To solve this problem we need to tell the Application that Kafka is hosted at [`camel_boilerplate_kafka`](https://github.com/obrunodelgado/camelboilerplate/blob/main/docker-compose.yml#L15) - Kafka's 
+container name - and the PostgreSQL is hosted at [`camel_boilerplate_postgres`](https://github.com/obrunodelgado/camelboilerplate/blob/main/docker-compose.yml#L31) - PostgreSQL container name.  These hosts 
 are defined at the `docker-compose.yml` file.
 
 So if we want to run the application in different environments we need to configure it to know how to manage this 
 different environments. In the project we have 3 properties  files:
 
-- **application.properties**:  properties that have the same values for any environment;
-- **application-docker.properties**: properties that have specific configuration values for Docker environment;
-- **application-local.properties**: properties that have specific configuration values for Local environment;
+- [**application.properties**](https://github.com/obrunodelgado/camelboilerplate/blob/main/src/main/resources/application.properties):  properties that have the same values for any environment;
+- [**application-docker.properties**](https://github.com/obrunodelgado/camelboilerplate/blob/main/src/main/resources/application-docker.properties): properties that have specific configuration values for Docker environment;
+- [**application-local.properties**](https://github.com/obrunodelgado/camelboilerplate/blob/main/src/main/resources/application-local.properties): properties that have specific configuration values for Local environment;
 
 The next step is to tell the application which property file it should consider other than the `application.properties` 
 file and in this case we do it using a special command-line argument `-Dspring-boot.run.profiles={environment}` 
