@@ -38,8 +38,8 @@ I highly recommend you to run this project using Docker instead of running local
 that you have a Kafka and a PostgreSQL instance running or locally or remotely so the application can connect to it and 
 do it's job. 
 
-> Running the application without Kafka and PostgreSQL instances will not result in Runtime Errors, but 
-> will maintain the application in a "trying to recover connections" state. 
+> Running the application without Kafka and PostgreSQL instances will result in errors, because
+> Flyway will try to execute the migrations and will not be capable of.
 
 ## Running using Docker
 
